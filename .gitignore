@@ -39,8 +39,8 @@ yarn-error.log*
 # Tailwind generated files
 theme/static/css/dist/
 
-# Static files (production)
-staticfiles/
+# Static files (production) - Keep staticfiles for deployment
+# staticfiles/
 static/
 
 # Secret keys
