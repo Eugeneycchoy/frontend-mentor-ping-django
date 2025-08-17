@@ -1,0 +1,2 @@
+django: /Users/eugeneycchoy/projects/frontend-mentor/venv/bin/python manage.py runserver
+tailwind: /Users/eugeneycchoy/projects/frontend-mentor/venv/bin/python manage.py tailwind start

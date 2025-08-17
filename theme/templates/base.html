@@ -1,0 +1,46 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>{% block title %}Django Tailwind{% endblock %}</title>
+    
+    {% block meta %}{% endblock %}
+    
+    {% tailwind_css %}
+
+    {% block extra_css %}<link rel="stylesheet" href="{% static '../static_src/src/styles.css' %}">{% endblock %}
+</head>
+
+<body class="
+    bg-gray-50 
+    text-black 
+    font-serif 
+    leading-normal 
+    tracking-normal
+    antialiased
+    min-h-screen flex items-center
+">
+    {% block body %}
+        <div class=" mx-auto w-[712px] flex mt-[87px] mb-[87px]">
+            {% block content %}
+                <section class="
+                    flex 
+                    items-center 
+                    justify-center 
+                    min-h-screen
+                ">
+                    <h1 class="text-5xl font-bold text-center">
+                        Django + Tailwind = ❤️
+                    </h1>
+                </section>
+            {% endblock content %}
+        </div>
+    {% endblock body %}
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

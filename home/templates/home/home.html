@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ping Coming Soon{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="We are launching soon. Subscribe to get notified!">
+    <meta name="keywords" content="coming soon, launch, notify, subscribe">
+{% endblock %}
+
+{% block content %}
+    <section class="flex flex-col items-center w-full">
+      <!-- Logo -->
+      <img class="w-[85.73px] mb-[48px]" src="{% static 'images/logo.svg' %}" />
+
+      <!-- Hero Text -->
+      <h1 class="max-sm:!text-[40px] text-preset-1-light text-gray-400">We are launching <span class="text-preset-1-bold text-blue-950">soon!</span></h1>
+      <p class="mb-500 text-preset-2-light text-blue-950">Subscribe and get notified</p>
+
+      <!-- Email Input -->
+      <form id="email-form" class="flex gap-4 max-sm:flex-col max-sm:w-[80%]" method="post" action="{% url 'home' %}" novalidate>
+        {% csrf_token %}
+        <div class="max-sm:w-full">
+          <label for="email" class="sr-only">Email address</label>
+          {% if form.email %}
+            {{ form.email }}
+          {% else %}
+            <input
+              class="max-sm:w-full bg-[white] text-preset-3-light w-[421px] border-[1px] border-[solid] border-[#c2d3ff] px-[32px] py-[18px] rounded-[100px] text-[#c2d3ff]"
+              type="email" 
+              id="email"
+              name="email"
+              placeholder="Your email address..."
+              required
+              aria-describedby="email-error"
+              autocomplete="email"
+            />
+          {% endif %}
+          
+          <!-- Error Messages -->
+          {% if form.email.errors %}
+            <span id="email-error" class="block mt-2 text-red-400 text-preset-4-italic" aria-live="polite">
+              {{ form.email.errors.0 }}
+            </span>
+          {% else %}
+            <span id="email-error" class="hidden mt-2 text-red-400 text-preset-4-italic" aria-live="polite"></span>
+          {% endif %}
+        </div>
+        <button class="px-[62.5px] py-[18px] text-[white] rounded-[100px] [box-shadow:0px_5px_10px_2px_rgba(76,123,243,0.24)] bg-[#4c7bf3] hover:bg-blue-600 transition-colors" type="submit" aria-describedby="submit-description">
+          Notify Me
+        </button>
+        <span id="submit-description" class="sr-only">
+          Subscribe to get notified when we launch
+        </span>
+      </form>
+
+      <!-- Success Messages -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="mt-4 p-4 rounded-lg bg-green-500 text-white text-center">
+            <p class="text-preset-3-semibold">{{ message }}</p>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <!-- Screenshot Img -->
+      <img class="w-[639.88px] mt-[96px]" src="{% static 'images/illustration-dashboard.png' %}"/>
+
+      <!-- Footer -->
+      <div class="flex socials fle mt-[72px] gap-4">
+        <div class="w-[31px] h-[31px] border-[1px] border-[solid] border-[#c2d3ff] p-[5px] rounded-[100%]"><img class="w-full h-full filter-blue-500" src="{% static 'images/facebook.svg'%}"/></div>
+        <div class="w-[31px] h-[31px] border-[1px] border-[solid] border-[#c2d3ff] p-[5px] rounded-[100%]"><img class="w-full h-full filter-blue-500" src="{% static 'images/twitter.svg'%}"/></div>
+        <div class="w-[31px] h-[31px] border-[1px] border-[solid] border-[#c2d3ff] p-[5px] rounded-[100%]"><img class="w-full h-full filter-blue-500" src="{% static 'images/instagram.svg'%}"/></div>
+      </div>
+
+      <p class="text-preset-4-light text-[#969696] !mt-[24px]">© Copyright Ping. All rights reserved.</p>
+
+
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('email-form');
+    const emailInput = document.getElementById('email');
+    const errorSpan = document.getElementById('email-error');
+    
+    // Real-time validation on blur
+    emailInput.addEventListener('blur', function() {
+        validateEmail();
+    });
+    
+    // Clear error on input
+    emailInput.addEventListener('input', function() {
+        if (errorSpan && !errorSpan.classList.contains('hidden')) {
+            clearError();
+        }
+    });
+    
+    // Form submission validation
+    form.addEventListener('submit', function(e) {
+        if (!validateEmail()) {
+            e.preventDefault();
+        }
+    });
+    
+    function validateEmail() {
+        const email = emailInput.value.trim();
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+        // Clear previous error
+        clearError();
+        
+        if (email === '') {
+            showError('Please provide a valid email address');
+            return false;
+        }
+        
+        if (!emailPattern.test(email)) {
+            showError('Whoops! It looks like you forgot to add a valid email');
+            return false;
+        }
+        
+        return true;
+    }
+    
+    function showError(message) {
+        if (errorSpan) {
+            errorSpan.textContent = message;
+            errorSpan.classList.remove('hidden');
+            errorSpan.classList.add('block');
+        }
+        emailInput.classList.add('border-red-400');
+        emailInput.classList.remove('border-[#c2d3ff]');
+    }
+    
+    function clearError() {
+        if (errorSpan) {
+            errorSpan.classList.add('hidden');
+            errorSpan.classList.remove('block');
+        }
+        emailInput.classList.remove('border-red-400');
+        emailInput.classList.add('border-[#c2d3ff]');
+    }
+});
+</script>
+{% endblock %}
